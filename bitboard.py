@@ -59,10 +59,19 @@ def bitboard_to_array(bitboard):
             
     return np.array(array, dtype=np.int8)
     
-def bitboards_to_3d_array(bitboards):
-    arrays = [bitboard_to_array(bitboard) for bitboard in bitboards]
+def bitboards_to_arrays(bitboards):
+    arrays = np.array([bitboard_to_array(bitboard) for bitboard in bitboards], dtype=np.int8)
+    assert arrays.shape == (12, 8, 8), "Expect shape (12, 8, 8)"
+    arrays = arrays.transpose((1, 2, 0))
     return np.array(arrays, dtype=np.int8)
-    
+
+def arrays_to_bitboards(list_of_arrays):
+    arrays = np.array(list_of_arrays, dtype=np.int8)
+    assert arrays.shape == (8, 8, 12), f"Expect shape (8, 8, 12), found: {arrays.shape}"
+    arrays = arrays.transpose((2, 0, 1))
+    bitboards = [array_to_bitboard(array) for array in arrays]
+    return bitboards
+
 def array_to_bitboard(array):
     bitboard = 0
     square = -1
