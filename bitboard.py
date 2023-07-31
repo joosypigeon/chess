@@ -88,7 +88,7 @@ def bitboard_to_array(bitboard):
     # Iterate over each square on the board
     for square in range(64):
         # Calculate the row and column index
-        row = 7 - square // 8
+        row = square // 8
         col = square % 8
 
         # Check if the bit at this square is set
@@ -96,19 +96,20 @@ def bitboard_to_array(bitboard):
             # If it is, set the corresponding element in the array to 1
             array[row][col] = 1
             
-    return np.array(array, dtype=np.int16)
+    return np.array(array, dtype=np.int8)
     
 def bitboards_to_3d_array(bitboards):
     arrays = [bitboard_to_array(bitboard) for bitboard in bitboards]
-    return np.array(arrays, dtype=np.int16)
+    return np.array(arrays, dtype=np.int8)
     
 def array_to_bitboard(array):
     bitboard = 0
+    square = -1
     for row in range(8):
         for col in range(8):
+            # Increment the square index (from 0 to 63) based on row and column
+            square += 1
             if array[row][col] == 1:
-                # Calculate the square index (from 0 to 63) based on row and column
-                square = 63 - (row * 8 + col)
                 # Set the bit at the calculated square index
                 bitboard |= (1 << square)
     return bitboard
